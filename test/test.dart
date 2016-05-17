@@ -61,7 +61,7 @@ abstract class Foo {
     declaration = new VariableGenerator("iStatic", isStatic: true, type: "int");
     clazz.addStaticVariable(declaration);
 
-    // static int get lengthStatic;
+    // static int get lengthStatic => 0;
     declaration = new MethodGenerator("lengthStatic",
         body: new SimpleGenerator("0"),
         isExpression: true,
@@ -70,7 +70,7 @@ abstract class Foo {
         returnType: "int");
     clazz.addStaticProperty(declaration);
 
-    // static void fooStatic();
+    // static int fooStatic() => 0;
     declaration = new MethodGenerator("fooStatic",
         body: new SimpleGenerator("0"),
         isExpression: true,
