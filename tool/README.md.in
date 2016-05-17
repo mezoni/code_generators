@@ -17,6 +17,7 @@ The following basic (declarative) generators provided:
 - Method (constructor, getter, method, operator, setter)
 - Variable (field, constant)
 - Typedef
+- Comment (single and multi line, freely configurable)
 
 Example of the declarative generation of the method:
 
@@ -40,7 +41,7 @@ Result (as the lines of the code):
 
 ```
 void set length(int length) {
-_length = length;
+  _length = length;
 };
 ```
 
@@ -65,7 +66,7 @@ Result (as the lines of the code):
 
 ```
 void set length(int length) {
-_length = length;
+  _length = length;
 };
 ```
 
