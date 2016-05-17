@@ -21,7 +21,7 @@ class MethodGenerator extends Object
 
   CoroutineType _coroutineType;
 
-  Generator _initializers;
+  List<String> _initializers;
 
   bool _isExpression;
 
@@ -39,7 +39,7 @@ class MethodGenerator extends Object
       {Generator body,
       Generator comment,
       CoroutineType coroutineType,
-      Generator initializers,
+      List<String> initializers,
       bool isExpression: false,
       bool isFactory: false,
       bool isStatic: false,
@@ -234,8 +234,7 @@ class MethodGenerator extends Object
 
     if (_initializers != null) {
       sb.write(" : ");
-      var result = _initializers.generate();
-      sb.write(result.join());
+      sb.write(_initializers.join(", "));
     }
   }
 }

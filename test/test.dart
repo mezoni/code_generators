@@ -230,12 +230,12 @@ void testMethods() {
       var result = method.generate().join("\n");
       expect(result, matcher);
 
-      var initializers = ["this.x = x"];
+      var initializers = ["this.x = x", "this.y = 0"];
       var parameters = new ParametersGenerator();
       parameters.addPositional("x", type: "int");
-      matcher = "Foo(int x) : this.x = x;";
+      matcher = "Foo(int x) : this.x = x, this.y = 0;";
       method = new MethodGenerator("Foo",
-          initializers: new SourceLinesGenerator(initializers),
+          initializers: initializers,
           parameters: parameters,
           methodType: MethodType.Constructor);
       result = method.generate().join("\n");
