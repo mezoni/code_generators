@@ -271,7 +271,21 @@ void foo() {
     });
 
     test("Typedef comment.", () {
-      // TODO: Implement
+      var matcher = """
+/// Typedef [foo] is a very useful typedef.
+typedef int Foo(int i, String s);""";
+
+      var source = "Typedef [foo] is a very useful typedef.";
+      var parameters = new ParametersGenerator();
+      parameters.addPositional("i", type: "int");
+      parameters.addPositional("s", type: "String");
+      var declaration = new TypedefGenerator("Foo",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source),
+          parameters: parameters,
+          returnType: "int");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
     });
 
     test("Variable comment.", () {
