@@ -4,7 +4,9 @@ class ScriptGenerator extends Object
     with
         GeneratorWithClasses,
         GeneratorWithDeclarations,
+        GeneratorWithTopLevelConstants,
         GeneratorWithTopLevelMethods,
+        GeneratorWithTopLevelProperties,
         GeneratorWithTopLevelVariables,
         TemplateGenerator
     implements Generator {

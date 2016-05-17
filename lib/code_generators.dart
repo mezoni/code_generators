@@ -15,4 +15,5 @@ part 'src/code_generators/script_generator.dart';
 part 'src/code_generators/simple_declaration_generator.dart';
 part 'src/code_generators/simple_generator.dart';
 part 'src/code_generators/template_generator.dart';
+part 'src/code_generators/typedef_generator.dart';
 part 'src/code_generators/variable_generator.dart';

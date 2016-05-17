@@ -20,7 +20,6 @@ class ClassGenerator extends Object
 {{#COMMENTS}}
 {{#METADATA}}
 {{SIGNATURE}} {
-  {{#PROLOGUE}}
   {{${DeclarationKey.StaticConstants}}}
   {{${DeclarationKey.StaticVariables}}}
   {{${DeclarationKey.StaticProperties}}}
@@ -29,8 +28,7 @@ class ClassGenerator extends Object
   {{${DeclarationKey.Properties}}}
   {{${DeclarationKey.Operators}}}
   {{${DeclarationKey.Methods}}}
-  {{${DeclarationKey.StaticMethods}}}
-  {{#EPILOGUE}}
+  {{${DeclarationKey.StaticMethods}}}  
 }""";
 
   final String name;

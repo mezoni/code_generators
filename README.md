@@ -21,6 +21,7 @@ void main() {
   testMetadata();
   testMethods();
   testParameters();
+  testTypedefs();
   // Variables
 }
 
@@ -39,7 +40,7 @@ abstract class FooImpl extends Object with BarBase, ListBase implements IBaz, IF
       expect(result, matcher);
     });
 
-    test("Members.", () {
+    test("Order of members.", () {
       var matcher = """
 abstract class Foo {
   static const int EOF = -1;
@@ -58,7 +59,7 @@ abstract class Foo {
 
   void foo();
 
-  static int fooStatic() => 0;
+  static int fooStatic() => 1;
 
 }""";
 
@@ -85,9 +86,9 @@ abstract class Foo {
           returnType: "int");
       clazz.addStaticProperty(declaration);
 
-      // static int fooStatic() => 0;
+      // static int fooStatic() => 1;
       declaration = new MethodGenerator("fooStatic",
-          body: new SimpleGenerator("0"),
+          body: new SimpleGenerator("1"),
           isExpression: true,
           isStatic: true,
           returnType: "int");
@@ -623,6 +624,21 @@ void testParameters() {
       parameters.addOptional("b", type: "bool", defaultValue: "true");
       parameters.addOptional("s", type: "String");
       var result = parameters.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
+void testTypedefs() {
+  group("Typedef declaration.", () {
+    test("Typedef signature.", () {
+      var matcher = "typedef int Foo(int i, String s);";
+      var parameters = new ParametersGenerator();
+      parameters.addPositional("i", type: "int");
+      parameters.addPositional("s", type: "String");
+      var declaration = new TypedefGenerator("Foo",
+          parameters: parameters, returnType: "int");
+      var result = declaration.generate().join("\n");
       expect(result, matcher);
     });
   });
