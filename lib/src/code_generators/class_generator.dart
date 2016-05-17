@@ -41,6 +41,8 @@ class ClassGenerator extends Object
 
   bool _isAbstract;
 
+  List<String> _metadata;
+
   List<String> _mixins;
 
   String _superclass;
@@ -49,6 +51,7 @@ class ClassGenerator extends Object
       {Generator comment,
       bool isAbstract: false,
       List<String> interfaces,
+      List<String> metadata,
       List<String> mixins,
       String superclass}) {
     if (name == null) {
@@ -63,6 +66,7 @@ class ClassGenerator extends Object
     _comment = comment;
     _interfaces = interfaces?.toList();
     _isAbstract = isAbstract;
+    _metadata = metadata;
     _mixins = mixins?.toList();
     _superclass = superclass;
     var generators = declarationGenerators;
@@ -82,6 +86,12 @@ class ClassGenerator extends Object
     generateDeclarations(block);
     var sb = new StringBuffer();
     _writeSignature(sb);
+    if (_metadata != null) {
+      var list = _metadata;
+      list.sort((a, b) => a.compareTo(b));
+      block.assign("#METADATA", list);
+    }
+
     if (_comment != null) {
       block.assign("#COMMENTS", _comment.generate());
     }

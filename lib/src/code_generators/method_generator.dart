@@ -9,6 +9,7 @@ class MethodGenerator extends Object
 
   static const String _template = """
 {{#COMMENTS}}
+{{#METADATA}}
 {{SIGNATURE}} {
   {{#BODY}}
 }""";
@@ -147,6 +148,12 @@ class MethodGenerator extends Object
 
   List<String> generate() {
     var comment = _comment?.generate();
+    List<String> metadata;
+    if (_metadata != null) {
+      metadata = _metadata.toList();
+      metadata.sort((a, b) => a.compareTo(b));
+    }
+
     var sb = new StringBuffer();
     _writeSignature(sb);
     if (_isExpression) {
@@ -156,6 +163,10 @@ class MethodGenerator extends Object
       var result = <String>[];
       if (comment != null) {
         result.addAll(comment);
+      }
+
+      if (metadata != null) {
+        result.addAll(metadata);
       }
 
       result.add(sb.toString());
@@ -169,6 +180,10 @@ class MethodGenerator extends Object
         result.addAll(comment);
       }
 
+      if (metadata != null) {
+        result.addAll(metadata);
+      }
+
       result.add(sb.toString());
       return result;
     }
@@ -176,6 +191,10 @@ class MethodGenerator extends Object
     var block = getTemplateBlock(_TEMPLATE);
     if (comment != null) {
       block.assign("#COMMENTS", comment);
+    }
+
+    if (metadata != null) {
+      block.assign("#METADATA", metadata);
     }
 
     block.assign("SIGNATURE", sb.toString());

@@ -10,59 +10,9 @@ void main() {
   // Variables
 }
 
-void testMetadata() {
-  // TODO: Add more tests of metadata
-  group("Metadata", () {
-    test("Class metadata", () {
-      // TODO:
-    });
-
-    test("Method metadata", () {
-      var matcher = """
-@bar("Foo")
-@foo("Bar")
-void foo();""";
-
-      var declaration = new MethodGenerator("foo",
-          metadata: ['@foo("Bar")', '@bar("Foo")'], returnType: "void");
-      var result = declaration.generate().join("\n");
-      expect(result, matcher);
-    });
-
-    test("Parameter metadata", () {
-      var matcher = "@NotNull @NotZero int i, @NotFalse bool b";
-      var parameters = new ParametersGenerator();
-      parameters.addPositional("i",
-          metadata: ["@NotNull", "@NotZero"], type: "int");
-      parameters.addPositional("b", metadata: ["@NotFalse"], type: "bool");
-      var result = parameters.generate().join("\n ");
-      expect(result, matcher);
-    });
-
-    test("Typedef metadata", () {
-      // TODO:
-    });
-
-    test("Variable metadata", () {
-      var matcher = """
-@bar("Foo")
-@foo("Bar")
-final int i = 5;""";
-
-      var declaration = new VariableGenerator("i",
-          isFinal: true,
-          metadata: ['@foo("Bar")', '@bar("Foo")'],
-          type: "int",
-          value: "5");
-      var result = declaration.generate().join("\n");
-      expect(result, matcher);
-    });
-  });
-}
-
 void testClasses() {
-  group("Class declaration", () {
-    test("Class signature", () {
+  group("Class declaration.", () {
+    test("Class signature.", () {
       var matcher = """
 abstract class FooImpl extends Object with BarBase, ListBase implements IBaz, IFoo {
 }""";
@@ -74,10 +24,9 @@ abstract class FooImpl extends Object with BarBase, ListBase implements IBaz, IF
       var result = clazz.generate().join("\n");
       expect(result, matcher);
     });
-  });
 
-  test("Members ", () {
-    var matcher = """
+    test("Members.", () {
+      var matcher = """
 abstract class Foo {
   static const int EOF = -1;
 
@@ -99,78 +48,80 @@ abstract class Foo {
 
 }""";
 
-    var clazz = new ClassGenerator("Foo", isAbstract: true);
-    DeclarationGenerator declaration;
-    ParametersGenerator parameters;
+      var clazz = new ClassGenerator("Foo", isAbstract: true);
+      DeclarationGenerator declaration;
+      ParametersGenerator parameters;
 
-    // static const int EOF = -1;
-    declaration = new VariableGenerator("EOF",
-        isConst: true, isStatic: true, type: "int", value: "-1");
-    clazz.addStaticConstant(declaration);
+      // static const int EOF = -1;
+      declaration = new VariableGenerator("EOF",
+          isConst: true, isStatic: true, type: "int", value: "-1");
+      clazz.addStaticConstant(declaration);
 
-    // static int iStatic;
-    declaration = new VariableGenerator("iStatic", isStatic: true, type: "int");
-    clazz.addStaticVariable(declaration);
+      // static int iStatic;
+      declaration =
+          new VariableGenerator("iStatic", isStatic: true, type: "int");
+      clazz.addStaticVariable(declaration);
 
-    // static int get lengthStatic => 0;
-    declaration = new MethodGenerator("lengthStatic",
-        body: new SimpleGenerator("0"),
-        isExpression: true,
-        isStatic: true,
-        methodType: MethodType.Getter,
-        returnType: "int");
-    clazz.addStaticProperty(declaration);
+      // static int get lengthStatic => 0;
+      declaration = new MethodGenerator("lengthStatic",
+          body: new SimpleGenerator("0"),
+          isExpression: true,
+          isStatic: true,
+          methodType: MethodType.Getter,
+          returnType: "int");
+      clazz.addStaticProperty(declaration);
 
-    // static int fooStatic() => 0;
-    declaration = new MethodGenerator("fooStatic",
-        body: new SimpleGenerator("0"),
-        isExpression: true,
-        isStatic: true,
-        returnType: "int");
-    clazz.addStaticMethod(declaration);
+      // static int fooStatic() => 0;
+      declaration = new MethodGenerator("fooStatic",
+          body: new SimpleGenerator("0"),
+          isExpression: true,
+          isStatic: true,
+          returnType: "int");
+      clazz.addStaticMethod(declaration);
 
-    // Foo();
-    declaration =
-        new MethodGenerator("Foo", methodType: MethodType.Constructor);
-    clazz.addConstructor(declaration);
+      // Foo();
+      declaration =
+          new MethodGenerator("Foo", methodType: MethodType.Constructor);
+      clazz.addConstructor(declaration);
 
-    // bool operator ==(other);
-    parameters = new ParametersGenerator();
-    parameters.addPositional("other");
-    declaration = new MethodGenerator("==",
-        methodType: MethodType.Operator,
-        parameters: parameters,
-        returnType: "bool");
-    clazz.addOperator(declaration);
+      // bool operator ==(other);
+      parameters = new ParametersGenerator();
+      parameters.addPositional("other");
+      declaration = new MethodGenerator("==",
+          methodType: MethodType.Operator,
+          parameters: parameters,
+          returnType: "bool");
+      clazz.addOperator(declaration);
 
-    // int get length;
-    parameters = new ParametersGenerator();
-    declaration = new MethodGenerator("length",
-        methodType: MethodType.Getter, returnType: "int");
-    clazz.addProperty(declaration);
+      // int get length;
+      parameters = new ParametersGenerator();
+      declaration = new MethodGenerator("length",
+          methodType: MethodType.Getter, returnType: "int");
+      clazz.addProperty(declaration);
 
-    // void set length(int length);
-    parameters = new ParametersGenerator();
-    parameters.addPositional("length", type: "int");
-    declaration = new MethodGenerator("length",
-        methodType: MethodType.Setter,
-        parameters: parameters,
-        returnType: "void");
-    clazz.addProperty(declaration);
+      // void set length(int length);
+      parameters = new ParametersGenerator();
+      parameters.addPositional("length", type: "int");
+      declaration = new MethodGenerator("length",
+          methodType: MethodType.Setter,
+          parameters: parameters,
+          returnType: "void");
+      clazz.addProperty(declaration);
 
-    // void foo();
-    declaration = new MethodGenerator("foo", returnType: "void");
-    clazz.addMethod(declaration);
+      // void foo();
+      declaration = new MethodGenerator("foo", returnType: "void");
+      clazz.addMethod(declaration);
 
-    // Test
-    var result = clazz.generate().join("\n");
-    expect(result, matcher);
+      // Test
+      var result = clazz.generate().join("\n");
+      expect(result, matcher);
+    });
   });
 }
 
 void testComments() {
-  group("Comments", () {
-    test("Single line", () {
+  group("Comments.", () {
+    test("Single line.", () {
       var source = """
 This is a comment.
 This is also a comment.""";
@@ -216,7 +167,7 @@ class Foo {
       expect(result, matcher);
     });
 
-    test("Multi line", () {
+    test("Multi line.", () {
       var source = """
 This is a comment.
 This is also a comment.""";
@@ -269,32 +220,149 @@ class Foo {
       result = clazz.generate().join("\n");
       expect(result, matcher);
     });
-  });
 
-  test("Class comment", () {
-    // TODO:
-  });
+    test("Class comment.", () {
+      var matcher = """
+/// Class [Foo] is a very useful class.
+class Foo {
+}""";
 
-  test("Directive comment", () {
-    // TODO:
-  });
+      var source = "Class [Foo] is a very useful class.";
+      var clazz = new ClassGenerator("Foo",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      var result = clazz.generate().join("\n");
+      expect(result, matcher);
+    });
 
-  test("Method comment", () {
-    // TODO:
-  });
+    test("Directive comment.", () {
+      // TODO: Implement
+    });
 
-  test("Typedef comment", () {
-    // TODO:
-  });
+    test("Method comment.", () {
+      var matcher = """
+/// Method [foo] is a very useful method.
+void foo() {
+}""";
 
-  test("Variable comment", () {
-    // TODO:
+      var source = "Method [foo] is a very useful method.";
+      var clazz = new MethodGenerator("foo",
+          body: new SimpleGenerator(""),
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source),
+          returnType: "void");
+      var result = clazz.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Typedef comment.", () {
+      // TODO: Implement
+    });
+
+    test("Variable comment.", () {
+      var matcher = """
+/// Variable [foo] is a very useful variable.
+String foo = 'Foo';""";
+
+      var source = "Variable [foo] is a very useful variable.";
+      var clazz = new VariableGenerator("foo",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source),
+          type: "String",
+          value: "'Foo'");
+      var result = clazz.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
+void testMetadata() {
+  group("Metadata.", () {
+    test("Class metadata.", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+class Foo {
+}""";
+
+      var declaration =
+          new ClassGenerator("Foo", metadata: ['@foo("Bar")', '@bar("Foo")']);
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Method metadata.", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+void foo();""";
+
+      var declaration = new MethodGenerator("foo",
+          metadata: ['@foo("Bar")', '@bar("Foo")'], returnType: "void");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+
+      matcher = """
+@bar("Foo")
+@foo("Bar")
+int foo() => 0;""";
+
+      declaration = new MethodGenerator("foo",
+          body: new SimpleGenerator("0"),
+          isExpression: true,
+          metadata: ['@foo("Bar")', '@bar("Foo")'],
+          returnType: "int");
+      result = declaration.generate().join("\n");
+      expect(result, matcher);
+      matcher = """
+@bar("Foo")
+@foo("Bar")
+int foo() {
+  return 0;
+}""";
+
+      declaration = new MethodGenerator("foo",
+          body: new SimpleGenerator("return 0;"),
+          metadata: ['@foo("Bar")', '@bar("Foo")'],
+          returnType: "int");
+      result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Parameter metadata.", () {
+      var matcher = "@NotNull @NotZero int i, @NotFalse bool b";
+      var parameters = new ParametersGenerator();
+      parameters.addPositional("i",
+          metadata: ["@NotNull", "@NotZero"], type: "int");
+      parameters.addPositional("b", metadata: ["@NotFalse"], type: "bool");
+      var result = parameters.generate().join("\n ");
+      expect(result, matcher);
+    });
+
+    test("Typedef metadata.", () {
+      // TODO: Implement
+    });
+
+    test("Variable metadata.", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+final int i = 5;""";
+
+      var declaration = new VariableGenerator("i",
+          isFinal: true,
+          metadata: ['@foo("Bar")', '@bar("Foo")'],
+          type: "int",
+          value: "5");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
   });
 }
 
 void testMethods() {
-  group("Method declaration", () {
-    test("Constructor", () {
+  group("Method declaration.", () {
+    test("Constructor.", () {
       var matcher = "Foo();";
       var method =
           new MethodGenerator("Foo", methodType: MethodType.Constructor);
@@ -346,7 +414,7 @@ _length = length;""";
       expect(result, matcher);
     });
 
-    test("Expression", () {
+    test("Expression.", () {
       var matcher = "bool sum(a, b) => a + b;";
       var body = "a + b";
       var parameters = new ParametersGenerator();
@@ -361,7 +429,7 @@ _length = length;""";
       expect(result, matcher);
     });
 
-    test("Setter", () {
+    test("Setter.", () {
       var matcher = """
 void set length(int length) {
   _length = length;
@@ -381,7 +449,7 @@ _length = length;""";
       expect(result, matcher);
     });
 
-    test("Getter", () {
+    test("Getter.", () {
       var matcher = """
 int get length {
   return _length;
@@ -398,7 +466,7 @@ return _length;""";
       expect(result, matcher);
     });
 
-    test("Method", () {
+    test("Method.", () {
       var matcher = "int foo();";
       var method = new MethodGenerator("foo", returnType: "int");
       var result = method.generate().join("\n");
@@ -462,7 +530,7 @@ if (true) {
       expect(result, matcher);
     });
 
-    test("Operator", () {
+    test("Operator.", () {
       var matcher = "bool operator ==();";
       var method = new MethodGenerator("==",
           methodType: MethodType.Operator, returnType: "bool");
@@ -470,7 +538,7 @@ if (true) {
       expect(result, matcher);
     });
 
-    test("Setter", () {
+    test("Setter.", () {
       var matcher = """
 void set length(int length) {
   _length = length;
@@ -493,8 +561,8 @@ _length = length;""";
 }
 
 void testParameters() {
-  group("Parameters declaration", () {
-    test("Named", () {
+  group("Parameters declaration.", () {
+    test("Named.", () {
       var matcher = "{int i, bool b : true, String s}";
       var parameters = new ParametersGenerator();
       parameters.addNamed("i", type: "int");
@@ -504,7 +572,7 @@ void testParameters() {
       expect(result, matcher);
     });
 
-    test("Optional", () {
+    test("Optional.", () {
       var matcher = "[int i, bool b = true, String s]";
       var parameters = new ParametersGenerator();
       parameters.addOptional("i", type: "int");
@@ -514,7 +582,7 @@ void testParameters() {
       expect(result, matcher);
     });
 
-    test("Positional", () {
+    test("Positional.", () {
       var matcher = "int i, bool b, String s";
       var parameters = new ParametersGenerator();
       parameters.addPositional("i", type: "int");
@@ -524,7 +592,7 @@ void testParameters() {
       expect(result, matcher);
     });
 
-    test("Positional and named", () {
+    test("Positional and named.", () {
       var matcher = "int i, {bool b : true, String s}";
       var parameters = new ParametersGenerator();
       parameters.addPositional("i", type: "int");
@@ -534,7 +602,7 @@ void testParameters() {
       expect(result, matcher);
     });
 
-    test("Positional and optional", () {
+    test("Positional and optional.", () {
       var matcher = "int i, [bool b = true, String s]";
       var parameters = new ParametersGenerator();
       parameters.addPositional("i", type: "int");
