@@ -28,7 +28,7 @@ class ClassGenerator extends Object
   {{${DeclarationKey.Properties}}}
   {{${DeclarationKey.Operators}}}
   {{${DeclarationKey.Methods}}}
-  {{${DeclarationKey.StaticMethods}}}  
+  {{${DeclarationKey.StaticMethods}}}
 }""";
 
   final String name;
