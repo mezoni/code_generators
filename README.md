@@ -1,7 +1,7 @@
 #code_generators
 ==========
 
-Collection of the template based code generators to simplify the process of generating the source code
+Collection of the template based code generators to simplify the process of generating the source code.
 
 Version: 0.0.1
 
