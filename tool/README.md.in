@@ -1,0 +1,16 @@
+#code_generators
+==========
+
+{{DESCRIPTION}}
+
+Version: {{VERSION}}
+
+WARNING: IN DEVELOPMENT
+
+Documentation is not available yet but you can get acquainted with the basic principles on the basis of tests.
+
+test/test.dart
+
+```dart
+{{test/test.dart}}
+```

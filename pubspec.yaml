@@ -1,0 +1,9 @@
+name: code_generators
+description: Collection of the template based code generators to simplify the process of generating the source code
+version: 0.0.1
+dependencies:
+  template_block: any
+dev_dependencies:
+  build_tools: any
+  file_utils: any
+  test: any

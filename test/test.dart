@@ -1,17 +1,3 @@
-#code_generators
-==========
-
-Collection of the template based code generators to simplify the process of generating the source code
-
-Version: 0.0.1
-
-WARNING: IN DEVELOPMENT
-
-Documentation is not available yet but you can get acquainted with the basic principles on the basis of tests.
-
-test/test.dart
-
-```dart
 import 'package:code_generators/code_generators.dart';
 import 'package:test/test.dart';
 
@@ -488,5 +474,3 @@ void testParameters() {
     });
   });
 }
-
-```
