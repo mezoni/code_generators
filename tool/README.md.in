@@ -9,8 +9,66 @@ WARNING: IN DEVELOPMENT
 
 Documentation is not available yet but you can get acquainted with the basic principles on the basis of tests.
 
-test/test.dart
+This software is designed to generate (well formatted) Dart source code by the template based generators (declarative and imperative templates, mixing them to obtain a desired result).
+
+The following basic (declarative) generators provided:
+- Script
+- Class
+- Method (constructor, getter, method, operator, setter)
+- Variable (field, constant)
+- Typedef
+
+Example of the declarative generation of the method:
 
 ```dart
-{{test/test.dart}}
+// Imperative template
+var body = """
+_length = length;""";
+
+// Declarative generators
+var parameters = new ParametersGenerator();
+parameters.addPositional("length", type: "int");
+var method = new MethodGenerator("length",
+    body: new ImperativeGenerator(body),
+    methodType: MethodType.Setter,
+    parameters: parameters,
+    returnType: "void");
+var result = method.generate().join("\n");
 ```
+
+Result (as the lines of the code):
+
+```
+void set length(int length) {
+_length = length;
+};
+```
+
+Also provided an additional (imperative) generators:
+- Imperative (any kind of the source code)
+- Imperative declaration (any declaration specified by its name)
+
+Example of the imperative generation of the method:
+
+```dart
+// Imperative template
+var source = """
+void set length(int length) {
+_length = length;
+};""";
+
+var method = new ImperativeDeclarationGenerator("length", source);
+var result = method.generate().join("\n");
+```
+
+Result (as the lines of the code):
+
+```
+void set length(int length) {
+_length = length;
+};
+```
+
+By combining declarative and imperative generators it becomes possible to very flexibly and intelligently generate high quality source code in the form of an list of lines of code (ie, line by line).
+
+This approach preserves formatting (indentation) of source code when are used an insertion of the template in other templates (more precisely templates was not inserted, but inserted the generated results, which are the lines of code in nature).

@@ -1,9 +1,9 @@
 part of code_generators;
 
-class SimpleGenerator implements Generator {
+class ImperativeGenerator implements Generator {
   List<String> _lines;
 
-  SimpleGenerator(dynamic source) {
+  ImperativeGenerator(dynamic source) {
     if (source == null) {
       throw new ArgumentError.notNull("source");
     }

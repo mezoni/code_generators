@@ -65,7 +65,7 @@ abstract class Foo {
 
       // static int get lengthStatic => 0;
       declaration = new MethodGenerator("lengthStatic",
-          body: new SimpleGenerator("0"),
+          body: new ImperativeGenerator("0"),
           isExpression: true,
           isStatic: true,
           methodType: MethodType.Getter,
@@ -74,7 +74,7 @@ abstract class Foo {
 
       // static int fooStatic() => 1;
       declaration = new MethodGenerator("fooStatic",
-          body: new SimpleGenerator("1"),
+          body: new ImperativeGenerator("1"),
           isExpression: true,
           isStatic: true,
           returnType: "int");
@@ -248,7 +248,7 @@ void foo() {
 
       var source = "Method [foo] is a very useful method.";
       var clazz = new MethodGenerator("foo",
-          body: new SimpleGenerator(""),
+          body: new ImperativeGenerator(""),
           comment: new CommentGenerator(CommentType.SingleLine,
               prepend: "/ ", source: source),
           returnType: "void");
@@ -323,7 +323,7 @@ void foo();""";
 int foo() => 0;""";
 
       declaration = new MethodGenerator("foo",
-          body: new SimpleGenerator("0"),
+          body: new ImperativeGenerator("0"),
           isExpression: true,
           metadata: ['@foo("Bar")', '@bar("Foo")'],
           returnType: "int");
@@ -337,7 +337,7 @@ int foo() {
 }""";
 
       declaration = new MethodGenerator("foo",
-          body: new SimpleGenerator("return 0;"),
+          body: new ImperativeGenerator("return 0;"),
           metadata: ['@foo("Bar")', '@bar("Foo")'],
           returnType: "int");
       result = declaration.generate().join("\n");
@@ -406,7 +406,7 @@ void testMethods() {
       parameters = new ParametersGenerator();
       parameters.addPositional("other", type: "Foo");
       method = new MethodGenerator("Foo.from",
-          body: new SimpleGenerator("new Foo._internal(other)"),
+          body: new ImperativeGenerator("new Foo._internal(other)"),
           isExpression: true,
           isFactory: true,
           methodType: MethodType.Constructor,
@@ -428,7 +428,7 @@ _length = length;""";
       var parameters = new ParametersGenerator();
       parameters.addPositional("length", type: "int");
       var method = new MethodGenerator("length",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           methodType: MethodType.Setter,
           parameters: parameters,
           returnType: "void");
@@ -443,7 +443,7 @@ _length = length;""";
       parameters.addPositional("a");
       parameters.addPositional("b");
       var method = new MethodGenerator("sum",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           isExpression: true,
           parameters: parameters,
           returnType: "bool");
@@ -463,7 +463,7 @@ _length = length;""";
       var parameters = new ParametersGenerator();
       parameters.addPositional("length", type: "int");
       var method = new MethodGenerator("length",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           methodType: MethodType.Setter,
           parameters: parameters,
           returnType: "void");
@@ -481,7 +481,7 @@ int get length {
 return _length;""";
 
       var method = new MethodGenerator("length",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           methodType: MethodType.Getter,
           returnType: "int");
       var result = method.generate().join("\n");
@@ -507,7 +507,7 @@ if (true) {
   return 41;
 }""";
       method = new MethodGenerator("foo",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           coroutineType: CoroutineType.Async,
           returnType: "Future<int>");
       result = method.generate().join("\n");
@@ -526,7 +526,7 @@ if (true) {
   return [41];
 }""";
       method = new MethodGenerator("foo",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           coroutineType: CoroutineType.AsyncIterable,
           returnType: "Stream<int>");
       result = method.generate().join("\n");
@@ -545,7 +545,7 @@ if (true) {
   return [41];
 }""";
       method = new MethodGenerator("foo",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           coroutineType: CoroutineType.SyncIterable,
           returnType: "Iterable<int>");
       result = method.generate().join("\n");
@@ -572,7 +572,7 @@ _length = length;""";
       var parameters = new ParametersGenerator();
       parameters.addPositional("length", type: "int");
       var method = new MethodGenerator("length",
-          body: new SimpleGenerator(body),
+          body: new ImperativeGenerator(body),
           methodType: MethodType.Setter,
           parameters: parameters,
           returnType: "void");

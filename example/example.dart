@@ -43,7 +43,7 @@ bool bar(int i) {
 }
 """;
 
-    var method = new SimpleDeclarationGenerator("bar", source);
+    var method = new ImperativeDeclarationGenerator("bar", source);
     clazz.addMethod(method);
   }
 
@@ -53,7 +53,7 @@ return 41;
 """;
 
     var method = new MethodGenerator(_fooAsync,
-        body: new SimpleGenerator(body),
+        body: new ImperativeGenerator(body),
         coroutineType: CoroutineType.Async,
         returnType: "Future<int>");
     clazz.addMethod(method);
@@ -70,7 +70,7 @@ return false;""";
     var parameters = new ParametersGenerator();
     parameters.addPositional("other");
     var method = new MethodGenerator("==",
-        body: new SimpleGenerator(body),
+        body: new ImperativeGenerator(body),
         methodType: MethodType.Operator,
         parameters: parameters,
         returnType: "bool");
@@ -89,7 +89,7 @@ if(a == b) {
     parameters.addPositional("a");
     parameters.addPositional("b");
     var method = new MethodGenerator(_foo,
-        body: new SimpleGenerator(body),
+        body: new ImperativeGenerator(body),
         parameters: parameters,
         returnType: "int");
     clazz.addMethod(method);

@@ -1,11 +1,11 @@
 part of code_generators;
 
-class SimpleDeclarationGenerator implements DeclarationGenerator {
+class ImperativeDeclarationGenerator implements DeclarationGenerator {
   final String name;
 
   List<String> _lines;
 
-  SimpleDeclarationGenerator(this.name, dynamic source) {
+  ImperativeDeclarationGenerator(this.name, dynamic source) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
