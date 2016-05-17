@@ -3,7 +3,7 @@
 
 Collection of the template based code generators to simplify the process of generating the source code.
 
-Version: 0.0.1
+Version: 0.0.2
 
 **Note: The project is under development (but ready for your experiments).**
 
@@ -12,6 +12,7 @@ Documentation is not available yet but you can get acquainted with the basic pri
 This software is designed to generate (well formatted) Dart source code by the template based generators (declarative and imperative templates, mixing them to obtain a desired result).
 
 The following basic (declarative) generators provided:
+
 - Script
 - Class
 - Method (constructor, getter, method, operator, setter)
@@ -48,6 +49,7 @@ void set length(int length) {
 ```
 
 Also provided an additional (imperative) generators:
+
 - Imperative (any kind of the source code)
 - Imperative declaration (any kind of the declaration specified by its name)
 
