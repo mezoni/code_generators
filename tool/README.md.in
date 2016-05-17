@@ -5,7 +5,7 @@
 
 Version: {{VERSION}}
 
-WARNING: IN DEVELOPMENT
+**Note: The project is under development (but ready for your experiments).**
 
 Documentation is not available yet but you can get acquainted with the basic principles on the basis of tests.
 
@@ -18,6 +18,8 @@ The following basic (declarative) generators provided:
 - Variable (field, constant)
 - Typedef
 - Comment (single and multi line, freely configurable)
+
+Metadata are also supported, but as the imperative specification (ie, as the list of the metadata elements) which will be formatted according to their placement (depending on the kind of declaration).
 
 Example of the declarative generation of the method:
 
@@ -47,7 +49,7 @@ void set length(int length) {
 
 Also provided an additional (imperative) generators:
 - Imperative (any kind of the source code)
-- Imperative declaration (any declaration specified by its name)
+- Imperative declaration (any kind of the declaration specified by its name)
 
 Example of the imperative generation of the method:
 
@@ -55,7 +57,7 @@ Example of the imperative generation of the method:
 // Imperative template
 var source = """
 void set length(int length) {
-_length = length;
+  _length = length;
 };""";
 
 var method = new ImperativeDeclarationGenerator("length", source);
