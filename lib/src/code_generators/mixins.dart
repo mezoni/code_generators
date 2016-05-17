@@ -27,6 +27,8 @@ class DeclarationKey {
 
   static const String TopLevelVariables = "#TOP_LEVEL_VARIABLES";
 
+  static const String Typedefs = "#TYPEDEFS";
+
   static const String Variables = "#VARIABLES";
 }
 
@@ -215,6 +217,17 @@ abstract class GeneratorWithTopLevelVariables extends Object
     }
 
     addDeclaration(declaration, DeclarationKey.TopLevelVariables);
+  }
+}
+
+abstract class GeneratorWithTypedefs extends Object
+    with GeneratorWithDeclarations {
+  void addTypedef(DeclarationGenerator declaration) {
+    if (declaration == null) {
+      throw new ArgumentError.notNull("declaration");
+    }
+
+    addDeclaration(declaration, DeclarationKey.Typedefs);
   }
 }
 

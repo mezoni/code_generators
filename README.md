@@ -22,7 +22,7 @@ void main() {
   testMethods();
   testParameters();
   testTypedefs();
-  // Variables
+  testVariables();
 }
 
 void testClasses() {
@@ -369,7 +369,14 @@ int foo() {
     });
 
     test("Typedef metadata.", () {
-      // TODO: Implement
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+typedef int Foo();""";
+      var declaration = new TypedefGenerator("Foo",
+          metadata: ['@foo("Bar")', '@bar("Foo")'], returnType: "int");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
     });
 
     test("Variable metadata.", () {
@@ -652,6 +659,26 @@ void testTypedefs() {
       parameters.addPositional("s", type: "String");
       var declaration = new TypedefGenerator("Foo",
           parameters: parameters, returnType: "int");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
+void testVariables() {
+  group("Variable declaration.", () {
+    test("Constant.", () {
+      var matcher = "static const int FOO = 1;";
+      var declaration = new VariableGenerator("FOO",
+          isConst: true, isStatic: true, type: "int", value: "1");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Variable.", () {
+      var matcher = "final String foo = 'Foo';";
+      var declaration = new VariableGenerator("foo",
+          isFinal: true, type: "String", value: "'Foo'");
       var result = declaration.generate().join("\n");
       expect(result, matcher);
     });

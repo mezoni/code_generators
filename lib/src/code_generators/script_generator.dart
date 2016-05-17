@@ -7,20 +7,20 @@ class ScriptGenerator extends Object
         GeneratorWithTopLevelConstants,
         GeneratorWithTopLevelMethods,
         GeneratorWithTopLevelProperties,
+        GeneratorWithTypedefs,
         GeneratorWithTopLevelVariables,
         TemplateGenerator
     implements Generator {
   static const String _TEMPLATE = "_TEMPLATE";
 
   static const String _template = """
-{{#PROLOGUE}}
-{{#TYPEDEFS}}
+{{#DIRECTIVES}}
+{{${DeclarationKey.Typedefs}}}
 {{${DeclarationKey.TopLevelConstants}}}
 {{${DeclarationKey.TopLevelVariables}}}
 {{${DeclarationKey.TopLevelProperties}}}
 {{${DeclarationKey.TopLevelMethods}}}
 {{${DeclarationKey.Classes}}}
-{{#EPILOGUE}}
 """;
 
   ScriptGenerator() {
