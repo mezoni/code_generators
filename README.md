@@ -18,9 +18,60 @@ import 'package:test/test.dart';
 void main() {
   testClasses();
   testComments();
+  testMetadata();
   testMethods();
   testParameters();
   // Variables
+}
+
+void testMetadata() {
+  // TODO: Add more tests of metadata
+  group("Metadata", () {
+    test("Class metadata", () {
+      // TODO:
+    });
+
+    test("Method metadata", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+void foo();""";
+
+      var declaration = new MethodGenerator("foo",
+          metadata: ['@foo("Bar")', '@bar("Foo")'], returnType: "void");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Parameter metadata", () {
+      var matcher = "@NotNull @NotZero int i, @NotFalse bool b";
+      var parameters = new ParametersGenerator();
+      parameters.addPositional("i",
+          metadata: ["@NotNull", "@NotZero"], type: "int");
+      parameters.addPositional("b", metadata: ["@NotFalse"], type: "bool");
+      var result = parameters.generate().join("\n ");
+      expect(result, matcher);
+    });
+
+    test("Typedef metadata", () {
+      // TODO:
+    });
+
+    test("Variable metadata", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+final int i = 5;""";
+
+      var declaration = new VariableGenerator("i",
+          isFinal: true,
+          metadata: ['@foo("Bar")', '@bar("Foo")'],
+          type: "int",
+          value: "5");
+      var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
 }
 
 void testClasses() {
@@ -232,6 +283,26 @@ class Foo {
       result = clazz.generate().join("\n");
       expect(result, matcher);
     });
+  });
+
+  test("Class comment", () {
+    // TODO:
+  });
+
+  test("Directive comment", () {
+    // TODO:
+  });
+
+  test("Method comment", () {
+    // TODO:
+  });
+
+  test("Typedef comment", () {
+    // TODO:
+  });
+
+  test("Variable comment", () {
+    // TODO:
   });
 }
 

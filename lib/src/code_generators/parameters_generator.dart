@@ -7,7 +7,8 @@ class ParametersGenerator implements Generator {
 
   List<_Parameter> _positional;
 
-  void addNamed(String name, {String defaultValue, String type}) {
+  void addNamed(String name,
+      {String defaultValue, List<String> metadata, String type}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
@@ -21,12 +22,13 @@ class ParametersGenerator implements Generator {
       _named = <_Parameter>[];
     }
 
-    var parameter =
-        new _Parameter(name, defaultValue: defaultValue, type: type);
+    var parameter = new _Parameter(name,
+        defaultValue: defaultValue, metadata: metadata, type: type);
     _named.add(parameter);
   }
 
-  void addOptional(String name, {String defaultValue, String type}) {
+  void addOptional(String name,
+      {String defaultValue, List<String> metadata, String type}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
@@ -40,12 +42,12 @@ class ParametersGenerator implements Generator {
       _optional = <_Parameter>[];
     }
 
-    var parameter =
-        new _Parameter(name, defaultValue: defaultValue, type: type);
+    var parameter = new _Parameter(name,
+        defaultValue: defaultValue, metadata: metadata, type: type);
     _optional.add(parameter);
   }
 
-  void addPositional(String name, {String type}) {
+  void addPositional(String name, {List<String> metadata, String type}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
@@ -64,7 +66,7 @@ class ParametersGenerator implements Generator {
       _positional = <_Parameter>[];
     }
 
-    var parameter = new _Parameter(name, type: type);
+    var parameter = new _Parameter(name, metadata: metadata, type: type);
     _positional.add(parameter);
   }
 
@@ -93,6 +95,14 @@ class ParametersGenerator implements Generator {
   }
 
   void _writeParameter(_Parameter parameter, StringBuffer sb, bool isNamed) {
+    var metadata = parameter.metadata;
+    if (metadata != null) {
+      var list = metadata.toList();
+      list.sort((a, b) => a.compareTo(b));
+      sb.write(list.join(" "));
+      sb.write(" ");
+    }
+
     var type = parameter.type;
     if (type != null) {
       sb.write(type);
@@ -126,13 +136,15 @@ class ParametersGenerator implements Generator {
 }
 
 class _Parameter {
-  String defaultValue;
+  final String defaultValue;
+
+  final List<String> metadata;
 
   final String name;
 
   final String type;
 
-  _Parameter(this.name, {this.defaultValue, this.type}) {
+  _Parameter(this.name, {this.defaultValue, this.metadata, this.type}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }

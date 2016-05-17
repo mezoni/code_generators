@@ -12,6 +12,7 @@ class ScriptGenerator extends Object
 
   static const String _template = """
 {{#PROLOGUE}}
+{{#TYPEDEFS}}
 {{${DeclarationKey.TopLevelConstants}}}
 {{${DeclarationKey.TopLevelVariables}}}
 {{${DeclarationKey.TopLevelProperties}}}

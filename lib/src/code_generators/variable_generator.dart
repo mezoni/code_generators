@@ -3,22 +3,38 @@ part of code_generators;
 class VariableGenerator implements DeclarationGenerator {
   final String name;
 
+  Generator _comment;
+
   bool _isConst;
 
+  bool _isFinal;
+
   bool _isStatic;
+
+  List<String> _metadata;
 
   String _type;
 
   String _value;
 
   VariableGenerator(this.name,
-      {bool isConst: false, bool isStatic: false, String type, String value}) {
+      {Generator comment,
+      bool isConst: false,
+      bool isFinal: false,
+      bool isStatic: false,
+      List<String> metadata,
+      String type,
+      String value}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
 
     if (isConst == null) {
       throw new ArgumentError.notNull("isConst");
+    }
+
+    if (isFinal == null) {
+      throw new ArgumentError.notNull("isFinal");
     }
 
     if (isStatic == null) {
@@ -35,13 +51,29 @@ class VariableGenerator implements DeclarationGenerator {
       }
     }
 
+    _comment = comment;
     _isConst = isConst;
+    _isFinal = isFinal;
     _isStatic = isStatic;
+    _metadata = metadata;
     _type = type;
     _value = value;
   }
 
   List<String> generate() {
+    var result = <String>[];
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
+    if (_metadata != null) {
+      var list = _metadata.toList();
+      list.sort((a, b) => a.compareTo(b));
+      for (var element in list) {
+        result.add(element);
+      }
+    }
+
     var sb = new StringBuffer();
     if (_isStatic) {
       sb.write("static ");
@@ -49,6 +81,10 @@ class VariableGenerator implements DeclarationGenerator {
 
     if (_isConst) {
       sb.write("const ");
+    }
+
+    if (_isFinal) {
+      sb.write("final ");
     }
 
     if (_type != null) {
@@ -63,6 +99,7 @@ class VariableGenerator implements DeclarationGenerator {
     }
 
     sb.write(";");
-    return <String>[sb.toString()];
+    result.add(sb.toString());
+    return result;
   }
 }

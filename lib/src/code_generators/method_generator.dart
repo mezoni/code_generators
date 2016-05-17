@@ -29,6 +29,8 @@ class MethodGenerator extends Object
 
   bool _isStatic;
 
+  List<String> _metadata;
+
   MethodType _methodType;
 
   Generator _parameters;
@@ -43,6 +45,7 @@ class MethodGenerator extends Object
       bool isExpression: false,
       bool isFactory: false,
       bool isStatic: false,
+      List<String> metadata,
       MethodType methodType: MethodType.Method,
       Generator parameters,
       String returnType}) {
@@ -136,6 +139,7 @@ class MethodGenerator extends Object
     _isExpression = isExpression;
     _isFactory = isFactory;
     _isStatic = isStatic;
+    _metadata = metadata;
     _methodType = methodType;
     _parameters = parameters;
     _returnType = returnType;
