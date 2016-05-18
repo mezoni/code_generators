@@ -32,6 +32,18 @@ class DeclarationKey {
   static const String Variables = "#VARIABLES";
 }
 
+class DirectiveKey {
+  static const String Export = "#EXPORT";
+
+  static const String Import = "#IMPORT";
+
+  static const String Library = "#LIBRARY";
+
+  static const String Part = "#PART";
+
+  static const String PartOf = "#PART_OF";
+}
+
 abstract class GeneratorWithClasses extends Object
     with GeneratorWithDeclarations {
   void addClass(DeclarationGenerator declaration) {
@@ -85,6 +97,51 @@ abstract class GeneratorWithDeclarations {
     for (var i = 0; i < count; i++) {
       var key = keys[i];
       var generators = _declarationGenerators[key].toList();
+      generators.sort((a, b) => a.name.compareTo(b.name));
+      for (var generator in generators) {
+        var result = generator.generate().toList();
+        var length = result.length;
+        if (length > 0) {
+          result[length - 1] += "\n";
+        }
+
+        block.assign(key, result);
+      }
+    }
+  }
+}
+
+abstract class GeneratorWithDirectives {
+  Map<String, List<DeclarationGenerator>> _directiveGenerators =
+      <String, List<DeclarationGenerator>>{};
+
+  Map<String, List<DeclarationGenerator>> get directiveGenerators {
+    return _directiveGenerators;
+  }
+
+  void addDirective(DeclarationGenerator directive, String key) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    if (key == null) {
+      throw new ArgumentError.notNull(key);
+    }
+
+    var generators = _directiveGenerators[key];
+    if (generators == null) {
+      throw new ArgumentError("Directive key '$key' not found");
+    }
+
+    generators.add(directive);
+  }
+
+  void generateDerectives(TemplateBlock block) {
+    var keys = _directiveGenerators.keys.toList();
+    var count = keys.length;
+    for (var i = 0; i < count; i++) {
+      var key = keys[i];
+      var generators = _directiveGenerators[key].toList();
       generators.sort((a, b) => a.name.compareTo(b.name));
       for (var generator in generators) {
         var result = generator.generate().toList();

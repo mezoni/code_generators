@@ -21,7 +21,7 @@ void main(List<String> args) {
   var filesUsedInReadMe = ["tool/README.md.in", "pubspec.yaml"];
   filesUsedInReadMe.add(TEST_DART);
 
-  var generatedFiles = [];
+  var generatedFiles = <String>[];
   generatedFiles.add(CHANGELOG_MD);
   generatedFiles.add(README_MD);
 
@@ -195,7 +195,7 @@ String getVersion() {
 }
 
 String incrementVersion(String version) {
-  var parts = version.split(".");
+  List parts = version.split(".");
   if (parts.length < 3) {
     return version;
   }
