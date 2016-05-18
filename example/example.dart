@@ -16,19 +16,19 @@ class _Generator implements Generator {
   static const String _fooAsync = "fooAsync";
 
   List<String> generate() {
-    var script = new ScriptGenerator();
+    var script = new LibraryGenerator();
     _generate_Baz(script);
     _generate_Foo(script);
     return script.generate();
   }
 
-  void _generate_Baz(ScriptGenerator script) {
+  void _generate_Baz(LibraryGenerator script) {
     var clazz = new ClassGenerator(_Baz);
     _generate_Baz_bar(clazz);
     script.addClass(clazz);
   }
 
-  void _generate_Foo(ScriptGenerator script) {
+  void _generate_Foo(LibraryGenerator script) {
     var clazz = new ClassGenerator(_Foo, mixins: [_Baz], superclass: "Object");
     _generate_Foo_eq(clazz);
     _generate_Foo_foo(clazz);

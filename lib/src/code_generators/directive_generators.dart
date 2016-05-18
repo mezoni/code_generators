@@ -4,7 +4,7 @@ abstract class DirectiveGenerator implements Generator {
   String get key;
 }
 
-abstract class ImportDirective implements DirectiveGenerator {
+abstract class ImportDirectiveGenerator implements DirectiveGenerator {
   List<String> _hide;
 
   bool _isDeferred;
@@ -17,7 +17,7 @@ abstract class ImportDirective implements DirectiveGenerator {
 
   List<String> _uri;
 
-  ImportDirective(List<String> uri,
+  ImportDirectiveGenerator(List<String> uri,
       {List<String> hide,
       bool isDeferred: false,
       String prefix,
@@ -102,10 +102,10 @@ abstract class ImportDirective implements DirectiveGenerator {
   }
 }
 
-class LibraryDirective implements DirectiveGenerator {
+class LibraryDirectiveGenerator implements DirectiveGenerator {
   String _name;
 
-  LibraryDirective(String name) {
+  LibraryDirectiveGenerator(String name) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
@@ -126,10 +126,10 @@ class LibraryDirective implements DirectiveGenerator {
   }
 }
 
-class PartDirective implements DirectiveGenerator {
+class PartDirectiveGenerator implements DirectiveGenerator {
   String _uri;
 
-  PartDirective(String uri) {
+  PartDirectiveGenerator(String uri) {
     if (uri == null) {
       throw new ArgumentError.notNull("uri");
     }
@@ -150,10 +150,10 @@ class PartDirective implements DirectiveGenerator {
   }
 }
 
-class PartOfDirective implements DirectiveGenerator {
+class PartOfDirectiveGenerator implements DirectiveGenerator {
   String _name;
 
-  PartOfDirective(String name) {
+  PartOfDirectiveGenerator(String name) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }

@@ -4,6 +4,7 @@ import 'package:test/test.dart';
 void main() {
   testClasses();
   testComments();
+  testDirectives();
   testMetadata();
   testMethods();
   testParameters();
@@ -286,6 +287,31 @@ String foo = 'Foo';""";
           type: "String",
           value: "'Foo'");
       var result = clazz.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
+void testDirectives() {
+  group("Directives.", () {
+    test("Directive 'library'.", () {
+      var matcher = "library my.cool.library;";
+      var directive = new LibraryDirectiveGenerator("my.cool.library");
+      var result = directive.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Directive 'part'.", () {
+      var matcher = "part 'src/foo/foo.dart';";
+      var directive = new PartDirectiveGenerator("src/foo/foo.dart");
+      var result = directive.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Directive 'part of'.", () {
+      var matcher = "part of my.cool.library;";
+      var directive = new PartOfDirectiveGenerator("my.cool.library");
+      var result = directive.generate().join("\n");
       expect(result, matcher);
     });
   });

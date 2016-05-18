@@ -112,14 +112,14 @@ abstract class GeneratorWithDeclarations {
 }
 
 abstract class GeneratorWithDirectives {
-  Map<String, List<DeclarationGenerator>> _directiveGenerators =
-      <String, List<DeclarationGenerator>>{};
+  Map<String, List<DirectiveGenerator>> _directiveGenerators =
+      <String, List<DirectiveGenerator>>{};
 
-  Map<String, List<DeclarationGenerator>> get directiveGenerators {
+  Map<String, List<DirectiveGenerator>> get directiveGenerators {
     return _directiveGenerators;
   }
 
-  void addDirective(DeclarationGenerator directive, String key) {
+  void addDirective(DirectiveGenerator directive, String key) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
@@ -142,7 +142,7 @@ abstract class GeneratorWithDirectives {
     for (var i = 0; i < count; i++) {
       var key = keys[i];
       var generators = _directiveGenerators[key].toList();
-      generators.sort((a, b) => a.name.compareTo(b.name));
+      generators.sort((a, b) => a.key.compareTo(b.key));
       for (var generator in generators) {
         var result = generator.generate().toList();
         var length = result.length;
@@ -153,6 +153,39 @@ abstract class GeneratorWithDirectives {
         block.assign(key, result);
       }
     }
+  }
+}
+
+abstract class GeneratorWithExportDirectives extends Object
+    with GeneratorWithDirectives {
+  void addConstructor(DirectiveGenerator directive) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    addDirective(directive, DirectiveKey.Export);
+  }
+}
+
+abstract class GeneratorWithImportDirectives extends Object
+    with GeneratorWithDirectives {
+  void addConstructor(DirectiveGenerator directive) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    addDirective(directive, DirectiveKey.Import);
+  }
+}
+
+abstract class GeneratorWithLibraryDirective extends Object
+    with GeneratorWithDirectives {
+  void addConstructor(DirectiveGenerator directive) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    addDirective(directive, DirectiveKey.Library);
   }
 }
 
@@ -175,6 +208,28 @@ abstract class GeneratorWithOperators extends Object
     }
 
     addDeclaration(declaration, DeclarationKey.Operators);
+  }
+}
+
+abstract class GeneratorWithPartDirectives extends Object
+    with GeneratorWithDirectives {
+  void addConstructor(DirectiveGenerator directive) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    addDirective(directive, DirectiveKey.Part);
+  }
+}
+
+abstract class GeneratorWithPartOfDirective extends Object
+    with GeneratorWithDirectives {
+  void addConstructor(DirectiveGenerator directive) {
+    if (directive == null) {
+      throw new ArgumentError.notNull("directive");
+    }
+
+    addDirective(directive, DirectiveKey.PartOf);
   }
 }
 
