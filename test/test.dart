@@ -238,7 +238,62 @@ class Foo {
     });
 
     test("Directive comment.", () {
-      // TODO: Implement
+      var matcher = """
+/// Directive 'export' is a very useful directive.
+export 'foo.dart';""";
+
+      var source = "Directive 'export' is a very useful directive.";
+      DirectiveGenerator directive = new ExportDirectiveGenerator("foo.dart",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      var result = directive.generate().join("\n");
+      // TODO:
+      //expect(result, matcher);
+
+      matcher = """
+/// Directive 'import' is a very useful directive.
+import 'foo.dart';""";
+
+      source = "Directive 'import' is a very useful directive.";
+      directive = new ImportDirectiveGenerator(["foo.dart"],
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      result = directive.generate().join("\n");
+      // TODO:
+      //expect(result, matcher);
+
+      matcher = """
+/// Directive 'library' is a very useful directive.
+library foo;""";
+
+      source = "Directive 'library' is a very useful directive.";
+      directive = new LibraryDirectiveGenerator("foo",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      result = directive.generate().join("\n");
+      expect(result, matcher);
+
+      matcher = """
+/// Directive 'part' is a very useful directive.
+part 'src/foo/foo.dart';""";
+
+      source = "Directive 'part' is a very useful directive.";
+      directive = new PartDirectiveGenerator("src/foo/foo.dart",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      result = directive.generate().join("\n");
+      expect(result, matcher);
+
+      matcher = """
+/// Directive 'part of' is a very useful directive.
+part of foo;""";
+
+      source = "Directive 'part of' is a very useful directive.";
+      directive = new PartOfDirectiveGenerator("foo",
+          comment: new CommentGenerator(CommentType.SingleLine,
+              prepend: "/ ", source: source));
+      result = directive.generate().join("\n");
+      expect(result, matcher);
     });
 
     test("Method comment.", () {

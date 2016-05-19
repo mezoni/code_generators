@@ -4,7 +4,34 @@ abstract class DirectiveGenerator implements Generator {
   String get key;
 }
 
-abstract class ImportDirectiveGenerator implements DirectiveGenerator {
+class ExportDirectiveGenerator implements DirectiveGenerator {
+  Generator _comment;
+
+  String _uri;
+
+  ExportDirectiveGenerator(String uri,
+      {Generator comment, List<String> hide, List<String> show}) {
+    if (uri == null) {
+      throw new ArgumentError.notNull("uri");
+    }
+
+    _comment = comment;
+    _uri = uri;
+  }
+
+  String get key {
+    return _uri;
+  }
+
+  List<String> generate() {
+    var result = <String>[];
+    return result;
+  }
+}
+
+class ImportDirectiveGenerator implements DirectiveGenerator {
+  Generator _comment;
+
   List<String> _hide;
 
   bool _isDeferred;
@@ -18,7 +45,8 @@ abstract class ImportDirectiveGenerator implements DirectiveGenerator {
   List<String> _uri;
 
   ImportDirectiveGenerator(List<String> uri,
-      {List<String> hide,
+      {Generator comment,
+      List<String> hide,
       bool isDeferred: false,
       String prefix,
       List<String> show}) {
@@ -40,6 +68,7 @@ abstract class ImportDirectiveGenerator implements DirectiveGenerator {
       }
     }
 
+    _comment = comment;
     _hide = hide?.toList();
     _isDeferred = isDeferred;
     _prefix = prefix;
@@ -103,13 +132,16 @@ abstract class ImportDirectiveGenerator implements DirectiveGenerator {
 }
 
 class LibraryDirectiveGenerator implements DirectiveGenerator {
+  Generator _comment;
+
   String _name;
 
-  LibraryDirectiveGenerator(String name) {
+  LibraryDirectiveGenerator(String name, {Generator comment}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
 
+    _comment = comment;
     _name = name;
   }
 
@@ -118,22 +150,31 @@ class LibraryDirectiveGenerator implements DirectiveGenerator {
   }
 
   List<String> generate() {
+    var result = <String>[];
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
     var sb = new StringBuffer();
     sb.write("library ");
     sb.write(_name);
     sb.write(";");
-    return <String>[sb.toString()];
+    result.add(sb.toString());
+    return result;
   }
 }
 
 class PartDirectiveGenerator implements DirectiveGenerator {
+  Generator _comment;
+
   String _uri;
 
-  PartDirectiveGenerator(String uri) {
+  PartDirectiveGenerator(String uri, {Generator comment}) {
     if (uri == null) {
       throw new ArgumentError.notNull("uri");
     }
 
+    _comment = comment;
     _uri = uri;
   }
 
@@ -142,22 +183,31 @@ class PartDirectiveGenerator implements DirectiveGenerator {
   }
 
   List<String> generate() {
+    var result = <String>[];
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
     var sb = new StringBuffer();
     sb.write("part '");
     sb.write(_uri);
     sb.write("';");
-    return <String>[sb.toString()];
+    result.add(sb.toString());
+    return result;
   }
 }
 
 class PartOfDirectiveGenerator implements DirectiveGenerator {
+  Generator _comment;
+
   String _name;
 
-  PartOfDirectiveGenerator(String name) {
+  PartOfDirectiveGenerator(String name, {Generator comment}) {
     if (name == null) {
       throw new ArgumentError.notNull("name");
     }
 
+    _comment = comment;
     _name = name;
   }
 
@@ -166,10 +216,16 @@ class PartOfDirectiveGenerator implements DirectiveGenerator {
   }
 
   List<String> generate() {
+    var result = <String>[];
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
     var sb = new StringBuffer();
     sb.write("part of ");
     sb.write(_name);
     sb.write(";");
-    return <String>[sb.toString()];
+    result.add(sb.toString());
+    return result;
   }
 }
