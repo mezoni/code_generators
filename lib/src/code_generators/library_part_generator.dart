@@ -16,20 +16,16 @@ class LibraryPartGenerator extends Object
   static const String _TEMPLATE = "_TEMPLATE";
 
   static const String _template = """
-{{${DirectiveKey.Library}}}
-{{${DirectiveKey.Import}}}
-{{${DirectiveKey.Export}}}
-{{${DirectiveKey.Import}}}
-{{${DirectiveKey.Part}}}
-{{${DeclarationKey.Typedefs}}}
+{{${DirectiveKey.PartOf}}}
 {{${DeclarationKey.TopLevelConstants}}}
 {{${DeclarationKey.TopLevelVariables}}}
 {{${DeclarationKey.TopLevelProperties}}}
 {{${DeclarationKey.TopLevelMethods}}}
+{{${DeclarationKey.Typedefs}}}
 {{${DeclarationKey.Classes}}}
 """;
 
-  LibraryGenerator() {
+  LibraryPartGenerator() {
     addTemplate(_TEMPLATE, _template);
     var keys = <String>[
       DeclarationKey.Classes,

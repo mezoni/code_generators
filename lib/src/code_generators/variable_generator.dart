@@ -45,10 +45,6 @@ class VariableGenerator implements DeclarationGenerator {
       if (value == null) {
         throw new StateError("Constant should have a value");
       }
-
-      if (!isStatic) {
-        throw new StateError("Constant should be static");
-      }
     }
 
     _comment = comment;

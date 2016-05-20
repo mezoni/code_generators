@@ -78,3 +78,11 @@ void set length(int length) {
 By combining declarative and imperative generators it becomes possible to very flexibly and intelligently generate high quality source code in the form of an list of lines of code (ie, line by line).
 
 This approach preserves formatting (indentation) of source code when are used an insertion of the template in other templates (more precisely templates was not inserted, but inserted the generated results, which are the lines of code in nature).
+
+The following code demonstrates basic the functionality:
+
+[test/test.dart](https://github.com/mezoni/code_generators/blob/master/test/test.dart)
+
+```dart
+{{test/test.dart}}
+```

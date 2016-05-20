@@ -6,6 +6,7 @@ void main() {
   testComments();
   testDirectives();
   testLibrary();
+  testLibraryPart();
   testMetadata();
   testMethods();
   testParameters();
@@ -406,7 +407,7 @@ part 'src/foo/foo.dart';
 
 const int FOO = 0;
 
-var s = "Hello";
+var s = 'Hello';
 
 int get x => 1;
 
@@ -433,9 +434,92 @@ class Foo {
       // export "baz.dart";
       script.addPart(new PartDirectiveGenerator("src/foo/foo.dart"));
 
+      // const int FOO = 0;
+      script.addTopLevelConstant(
+          new VariableGenerator("FOO", isConst: true, type: "int", value: "0"));
+
+      // var s = "Hello";
+      script.addTopLevelVariable(
+          new VariableGenerator("s", type: "var", value: "'Hello'"));
+
+      // int get x => 1;
+      script.addTopLevelProperty(new MethodGenerator("x",
+          body: new ImperativeGenerator("1"),
+          isExpression: true,
+          methodType: MethodType.Getter,
+          returnType: "int"));
+
+      // void foo() {
+      // }
+      script.addTopLevelMethod(new MethodGenerator("foo",
+          body: new ImperativeGenerator(""), returnType: "void"));
+
+      // typedef A();
+      script.addTypedef(new TypedefGenerator("A"));
+
       // class Foo {
       // }
       script.addClass(new ClassGenerator("Foo"));
+
+      var result = script.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
+void testLibraryPart() {
+  group("Library part.", () {
+    test("Order of members.", () {
+      var matcher = """
+part of foo;
+
+const int FOO = 0;
+
+var s = 'Hello';
+
+int get x => 1;
+
+void foo() {
+}
+
+typedef A();
+
+class Foo {
+}
+
+""";
+
+      var script = new LibraryPartGenerator();
+      // part of  foo;
+      script.addPartOf(new PartOfDirectiveGenerator("foo"));
+
+      // const int FOO = 0;
+      script.addTopLevelConstant(
+          new VariableGenerator("FOO", isConst: true, type: "int", value: "0"));
+
+      // var s = "Hello";
+      script.addTopLevelVariable(
+          new VariableGenerator("s", type: "var", value: "'Hello'"));
+
+      // int get x => 1;
+      script.addTopLevelProperty(new MethodGenerator("x",
+          body: new ImperativeGenerator("1"),
+          isExpression: true,
+          methodType: MethodType.Getter,
+          returnType: "int"));
+
+      // void foo() {
+      // }
+      script.addTopLevelMethod(new MethodGenerator("foo",
+          body: new ImperativeGenerator(""), returnType: "void"));
+
+      // typedef A();
+      script.addTypedef(new TypedefGenerator("A"));
+
+      // class Foo {
+      // }
+      script.addClass(new ClassGenerator("Foo"));
+
       var result = script.generate().join("\n");
       expect(result, matcher);
     });
