@@ -7,15 +7,38 @@ abstract class DirectiveGenerator implements Generator {
 class ExportDirectiveGenerator implements DirectiveGenerator {
   Generator _comment;
 
+  List<String> _hide;
+
+  List<String> _metadata;
+
+  List<String> _show;
+
   String _uri;
 
   ExportDirectiveGenerator(String uri,
-      {Generator comment, List<String> hide, List<String> show}) {
+      {Generator comment,
+      List<String> hide,
+      List<String> metadata,
+      List<String> show}) {
     if (uri == null) {
       throw new ArgumentError.notNull("uri");
     }
 
+    if (hide != null) {
+      if (hide.length == 0) {
+        throw new ArgumentError.value(hide, "hide", "Cannot not be empty");
+      }
+    }
+
+    if (show != null) {
+      if (show.length == 0) {
+        throw new ArgumentError.value(show, "show", "Cannot not be empty");
+      }
+    }
+
     _comment = comment;
+    _hide = hide?.toList();
+    _show = show?.toList();
     _uri = uri;
   }
 
@@ -25,6 +48,36 @@ class ExportDirectiveGenerator implements DirectiveGenerator {
 
   List<String> generate() {
     var result = <String>[];
+    if (_metadata != null) {
+      var list = _metadata;
+      list.sort((a, b) => a.compareTo(b));
+      result.addAll(list);
+    }
+
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
+    var sb = new StringBuffer();
+    sb.write("export '");
+    sb.write(_uri);
+    sb.write("'");
+    if (_show != null) {
+      var list = _show.toList();
+      list.sort((a, b) => a.compareTo(b));
+      sb.write(" show ");
+      sb.write(list.join(", "));
+    }
+
+    if (_hide != null) {
+      var list = _hide.toList();
+      list.sort((a, b) => a.compareTo(b));
+      sb.write(" hide ");
+      sb.write(list.join(", "));
+    }
+
+    sb.write(";");
+    result.add(sb.toString());
     return result;
   }
 }
@@ -38,24 +91,23 @@ class ImportDirectiveGenerator implements DirectiveGenerator {
 
   String _key;
 
+  List<String> _metadata;
+
   String _prefix;
 
   List<String> _show;
 
-  List<String> _uri;
+  String _uri;
 
-  ImportDirectiveGenerator(List<String> uri,
+  ImportDirectiveGenerator(String uri,
       {Generator comment,
       List<String> hide,
       bool isDeferred: false,
+      List<String> metadata,
       String prefix,
       List<String> show}) {
     if (uri == null) {
       throw new ArgumentError.notNull("uri");
-    }
-
-    if (uri.length == 0) {
-      throw new ArgumentError("List of uri should not be empty");
     }
 
     if (isDeferred == null) {
@@ -63,19 +115,31 @@ class ImportDirectiveGenerator implements DirectiveGenerator {
     }
 
     if (isDeferred) {
-      if (_prefix == null) {
+      if (prefix == null) {
         throw new StateError("Deferred import should have a prefix");
+      }
+    }
+
+    if (hide != null) {
+      if (hide.length == 0) {
+        throw new ArgumentError.value(hide, "hide", "Cannot not be empty");
+      }
+    }
+
+    if (show != null) {
+      if (show.length == 0) {
+        throw new ArgumentError.value(show, "show", "Cannot not be empty");
       }
     }
 
     _comment = comment;
     _hide = hide?.toList();
     _isDeferred = isDeferred;
+    _key = uri;
+    _metadata = metadata;
     _prefix = prefix;
     _show = show?.toList();
-    _uri = uri.toList();
-    _uri.sort((a, b) => a.compareTo(b));
-    _key = _uri.join(" || ");
+    _uri = uri;
   }
 
   String get key {
@@ -84,24 +148,23 @@ class ImportDirectiveGenerator implements DirectiveGenerator {
 
   List<String> generate() {
     var result = <String>[];
+    if (_metadata != null) {
+      var list = _metadata;
+      list.sort((a, b) => a.compareTo(b));
+      result.addAll(list);
+    }
+
+    if (_comment != null) {
+      result.addAll(_comment.generate());
+    }
+
     var sb = new StringBuffer();
     sb.write("import ");
-    var length = _uri.length;
-    if (length == 1) {
-      sb.write(_uri);
-    } else {
-      for (var i = 0; i < length; i++) {
-        var uri = _uri[i];
-        if (i > 0) {
-          sb.write("      || ");
-        }
-
-        sb.write(uri);
-        result.add(sb.toString());
-        sb.clear();
-      }
-
-      sb.write("      ");
+    sb.write("'");
+    sb.write(_uri);
+    sb.write("'");
+    if (_isDeferred) {
+      sb.write(" deferred");
     }
 
     if (_prefix != null) {
@@ -109,20 +172,18 @@ class ImportDirectiveGenerator implements DirectiveGenerator {
       sb.write(_prefix);
     }
 
-    if (_isDeferred) {
-      sb.write(" deferred");
-    }
-
     if (_show != null) {
-      _show.sort((a, b) => a.compareTo(b));
+      var list = _show.toList();
+      list.sort((a, b) => a.compareTo(b));
       sb.write(" show ");
-      sb.write(_show.join(", "));
+      sb.write(list.join(", "));
     }
 
     if (_hide != null) {
-      _hide.sort((a, b) => a.compareTo(b));
+      var list = _hide.toList();
+      list.sort((a, b) => a.compareTo(b));
       sb.write(" hide ");
-      sb.write(_hide.join(", "));
+      sb.write(list.join(", "));
     }
 
     sb.write(";");
@@ -167,9 +228,12 @@ class LibraryDirectiveGenerator implements DirectiveGenerator {
 class PartDirectiveGenerator implements DirectiveGenerator {
   Generator _comment;
 
+  List<String> _metadata;
+
   String _uri;
 
-  PartDirectiveGenerator(String uri, {Generator comment}) {
+  PartDirectiveGenerator(String uri,
+      {Generator comment, List<String> metadata}) {
     if (uri == null) {
       throw new ArgumentError.notNull("uri");
     }
@@ -184,6 +248,12 @@ class PartDirectiveGenerator implements DirectiveGenerator {
 
   List<String> generate() {
     var result = <String>[];
+    if (_metadata != null) {
+      var list = _metadata;
+      list.sort((a, b) => a.compareTo(b));
+      result.addAll(list);
+    }
+
     if (_comment != null) {
       result.addAll(_comment.generate());
     }

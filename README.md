@@ -13,7 +13,8 @@ This software is designed to generate (well formatted) Dart source code by the t
 
 The following basic (declarative) generators provided:
 
-- Script
+- Library
+- Library part
 - Class
 - Method (constructor, getter, method, operator, setter)
 - Variable (field, constant)

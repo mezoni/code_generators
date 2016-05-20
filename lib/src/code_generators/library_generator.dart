@@ -22,13 +22,12 @@ class LibraryGenerator extends Object
 {{${DirectiveKey.Library}}}
 {{${DirectiveKey.Import}}}
 {{${DirectiveKey.Export}}}
-{{${DirectiveKey.Import}}}
 {{${DirectiveKey.Part}}}
-{{${DeclarationKey.Typedefs}}}
 {{${DeclarationKey.TopLevelConstants}}}
 {{${DeclarationKey.TopLevelVariables}}}
 {{${DeclarationKey.TopLevelProperties}}}
 {{${DeclarationKey.TopLevelMethods}}}
+{{${DeclarationKey.Typedefs}}}
 {{${DeclarationKey.Classes}}}
 """;
 

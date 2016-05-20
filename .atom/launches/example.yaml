@@ -1,6 +1,6 @@
 # Cli launch configuration for example\example.dart.
 type: cli
-path: example\example.dart
+path: example/example.dart
 
 cli:
   # Additional args for the application.

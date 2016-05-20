@@ -5,6 +5,7 @@ void main() {
   testClasses();
   testComments();
   testDirectives();
+  testLibrary();
   testMetadata();
   testMethods();
   testParameters();
@@ -247,20 +248,18 @@ export 'foo.dart';""";
           comment: new CommentGenerator(CommentType.SingleLine,
               prepend: "/ ", source: source));
       var result = directive.generate().join("\n");
-      // TODO:
-      //expect(result, matcher);
+      expect(result, matcher);
 
       matcher = """
 /// Directive 'import' is a very useful directive.
 import 'foo.dart';""";
 
       source = "Directive 'import' is a very useful directive.";
-      directive = new ImportDirectiveGenerator(["foo.dart"],
+      directive = new ImportDirectiveGenerator("foo.dart",
           comment: new CommentGenerator(CommentType.SingleLine,
               prepend: "/ ", source: source));
       result = directive.generate().join("\n");
-      // TODO:
-      //expect(result, matcher);
+      expect(result, matcher);
 
       matcher = """
 /// Directive 'library' is a very useful directive.
@@ -349,6 +348,27 @@ String foo = 'Foo';""";
 
 void testDirectives() {
   group("Directives.", () {
+    test("Directive 'export'.", () {
+      var matcher = """
+export 'src/foo/foo.dart' show Bang, Foo hide Bar, Baz;""";
+      var directive = new ExportDirectiveGenerator("src/foo/foo.dart",
+          hide: ["Baz", "Bar"], show: ["Foo", "Bang"]);
+      var result = directive.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Directive 'import'.", () {
+      var matcher = """
+import 'src/foo/foo.dart' deferred as foo show Bang, Foo hide Bar, Baz;""";
+      var directive = new ImportDirectiveGenerator("src/foo/foo.dart",
+          hide: ["Baz", "Bar"],
+          isDeferred: true,
+          prefix: "foo",
+          show: ["Foo", "Bang"]);
+      var result = directive.generate().join("\n");
+      expect(result, matcher);
+    });
+
     test("Directive 'library'.", () {
       var matcher = "library my.cool.library;";
       var directive = new LibraryDirectiveGenerator("my.cool.library");
@@ -372,6 +392,56 @@ void testDirectives() {
   });
 }
 
+void testLibrary() {
+  group("Library.", () {
+    test("Order of members.", () {
+      var matcher = """
+library foo;
+
+import 'baz.dart';
+
+export 'baz.dart';
+
+part 'src/foo/foo.dart';
+
+const int FOO = 0;
+
+var s = "Hello";
+
+int get x => 1;
+
+void foo() {
+}
+
+typedef A();
+
+class Foo {
+}
+
+""";
+
+      var script = new LibraryGenerator();
+      // library foo;
+      script.addLibrary(new LibraryDirectiveGenerator("foo"));
+
+      // import "baz.dart";
+      script.addImport(new ImportDirectiveGenerator("baz.dart"));
+
+      // export "baz.dart";
+      script.addExport(new ExportDirectiveGenerator("baz.dart"));
+
+      // export "baz.dart";
+      script.addPart(new PartDirectiveGenerator("src/foo/foo.dart"));
+
+      // class Foo {
+      // }
+      script.addClass(new ClassGenerator("Foo"));
+      var result = script.generate().join("\n");
+      expect(result, matcher);
+    });
+  });
+}
+
 void testMetadata() {
   group("Metadata.", () {
     test("Class metadata.", () {
@@ -384,6 +454,18 @@ class Foo {
       var declaration =
           new ClassGenerator("Foo", metadata: ['@foo("Bar")', '@bar("Foo")']);
       var result = declaration.generate().join("\n");
+      expect(result, matcher);
+    });
+
+    test("Directive metadata.", () {
+      var matcher = """
+@bar("Foo")
+@foo("Bar")
+import 'foo.dart';""";
+
+      var directive = new ImportDirectiveGenerator("foo.dart",
+          metadata: ['@foo("Bar")', '@bar("Foo")']);
+      var result = directive.generate().join("\n");
       expect(result, matcher);
     });
 

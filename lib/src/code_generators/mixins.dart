@@ -158,7 +158,7 @@ abstract class GeneratorWithDirectives {
 
 abstract class GeneratorWithExportDirectives extends Object
     with GeneratorWithDirectives {
-  void addConstructor(DirectiveGenerator directive) {
+  void addExport(DirectiveGenerator directive) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
@@ -169,7 +169,7 @@ abstract class GeneratorWithExportDirectives extends Object
 
 abstract class GeneratorWithImportDirectives extends Object
     with GeneratorWithDirectives {
-  void addConstructor(DirectiveGenerator directive) {
+  void addImport(DirectiveGenerator directive) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
@@ -180,7 +180,7 @@ abstract class GeneratorWithImportDirectives extends Object
 
 abstract class GeneratorWithLibraryDirective extends Object
     with GeneratorWithDirectives {
-  void addConstructor(DirectiveGenerator directive) {
+  void addLibrary(DirectiveGenerator directive) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
@@ -213,7 +213,7 @@ abstract class GeneratorWithOperators extends Object
 
 abstract class GeneratorWithPartDirectives extends Object
     with GeneratorWithDirectives {
-  void addConstructor(DirectiveGenerator directive) {
+  void addPart(DirectiveGenerator directive) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
@@ -224,7 +224,7 @@ abstract class GeneratorWithPartDirectives extends Object
 
 abstract class GeneratorWithPartOfDirective extends Object
     with GeneratorWithDirectives {
-  void addConstructor(DirectiveGenerator directive) {
+  void addPartOf(DirectiveGenerator directive) {
     if (directive == null) {
       throw new ArgumentError.notNull("directive");
     }
