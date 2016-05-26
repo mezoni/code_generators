@@ -1,5 +1,5 @@
 name: code_generators
-version: 0.0.2
+version: 0.0.3
 author: Andrew Mezoni <andrew.mezoni@gmail.com>
 description: Collection of the template based code generators to simplify the process of generating the source code.
 homepage: https://github.com/mezoni/code_generators

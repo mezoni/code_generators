@@ -3,7 +3,7 @@
 
 Collection of the template based code generators to simplify the process of generating the source code.
 
-Version: 0.0.2
+Version: 0.0.3
 
 **Note: The project is under development (but ready for your experiments).**
 

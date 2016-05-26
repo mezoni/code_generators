@@ -146,6 +146,18 @@ class MethodGenerator extends Object
     _returnType = returnType;
   }
 
+  void set body(Generator body) {
+    if (body == null) {
+      throw new ArgumentError.notNull("body");
+    }
+
+    if (_body != null) {
+      throw new StateError("Method body already set");
+    }
+
+    _body = body;
+  }
+
   List<String> generate() {
     var comment = _comment?.generate();
     List<String> metadata;

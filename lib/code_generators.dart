@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:template_block/template_block.dart';
 
+export 'package:template_block/template_block.dart';
+
 part 'src/code_generators/class_generator.dart';
 part 'src/code_generators/comment_generator.dart';
 part 'src/code_generators/declaration_generator.dart';
